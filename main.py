@@ -2,18 +2,43 @@ from flask import Flask, render_template
 import sqlite3
 app = Flask(__name__)
 
+def execute_sql(cmd , vals=None):
+    conn = sqlite3.connect("main.db")
+    cursor = conn.cursor()
 
-app.route("/")
+    if vals:
+        cursor.execute(cmd , vals)
+    else:
+        cursor.execute(cmd)
+
+    res = cursor.fetchall()
+
+    conn.commit()
+    conn.close()
+    return res
+    
+
+@app.route("/")
 def welcome():
+    execute_sql("CREATE TABLE IF NOT EXISTS User(\
+                user_id INTEGER PRIMARY KEY,\
+                email TEXT NOT NULL UNIQUE,\
+                password TEXT NOT NULL)")
+    
     return render_template("welcome.html")
 
 
 
 
-app.route("/Log in")
-def log_in ():
-    return render_template("log_in.html")
+@app.route("/login")
+def login ():
+    return render_template("login.html")
 
+@app.route("/signup")
+def signup():
+    return render_template("signup.html")
+
+# @app.route("/sumbit")
 
 
 

@@ -7,13 +7,17 @@
     
 </head>
 <body>
+    
     <form action="/sumbit" method="POST">
+        <p style="color: red;">{{message}}</p> 
         <label for="email">Email</label>
         <input type="email" name="email" id="email" placeholder="example@gmail.com" required> <br>
         <label for="password">Password</label>
-        <input type="password" name="password" id="password" placeholder="********" required><br>
-
+        <input type="password" name="password" id="password" placeholder="********" required><br> <br>
+        
     <button type="submit">Done</button>  
+    
     </form>
+    <p>Already have an account?  <a href="/login" ><button type="button">Log In</button></a></p>
 </body>
 </html>

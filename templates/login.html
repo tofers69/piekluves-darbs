@@ -6,14 +6,17 @@
     <title>Log In</title>
 </head>
 <body>
+    <p style="color: red;">{{message}}</p>
     <form action="/submitlog" method="POST">
     <label for="email">Email</label>
     <input type="email" name="email" id="email" placeholder="example@gmail.com"> <br>
     <label for="password">Password</label>
-    <input type="password" name="password" id="password" placeholder="********"> <br>
+    <input type="password" name="password" id="password" placeholder="********"> <br><br>
 
     <button type="submit">Done</button>
 
     </form> 
+    <p>Don't have an account?<a href="/signup"><button type="button">Sign Up</button></a></p>
+
 </body>
 </html>

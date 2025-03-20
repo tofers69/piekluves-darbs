@@ -20,6 +20,7 @@ def execute_sql(cmd , vals=None):
 
 @app.route("/")
 def welcome():
+    execute_sql("DELETE FROM USER WHERE user_id = 5 ")
     execute_sql("CREATE TABLE IF NOT EXISTS User(\
                 user_id INTEGER PRIMARY KEY,\
                 email TEXT NOT NULL UNIQUE,\
@@ -38,23 +39,38 @@ def login ():
 def signup():
     return render_template("signup.html")
 
+
+@app.route("/home")
+def home():
+    return render_template ("home.html")
+
+
+
+
 @app.route("/sumbit" , methods = ["POST" , "GET"])
 
 def submit ():
     
-    if request.method == "POST":
+    if request.method == "POST" :
         email = request.form["email"]
         password = request.form["password"]
         
         email = email.strip()
         password = password.strip()
 
+        check = execute_sql("SELECT EXISTS (SELECT 1 FROM User WHERE email = ?  )" , (  email ,    )   )
+
         if email =="" or password =="":
             return render_template ("error.html", message="Email/Password cannot be empty ")
+        
+        if str(check) == "[(0,)]":
+            execute_sql("INSERT INTO User (email , password) VALUES (?,?) ",  (email , password))
+            return render_template("login.html")
+        else :
+            return render_template ( "signup.html", message ="An account with this email already exists")
+             
+    
 
-    execute_sql("INSERT INTO User (email , password) VALUES (?,?) ",  (email , password))
-
-    return render_template("login.html")
 
 
 
@@ -75,9 +91,9 @@ def submitlog ():
         
         
         if str(check) == "[(1,)]":
-            return render_template("welcome.html")
+            return render_template("home.html")
         else:
-            return render_template("signup.html")
+            return render_template("login.html" , message = "Incorrect email or password")
 
 
 

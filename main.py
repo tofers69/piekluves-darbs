@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template , request
 import sqlite3
 app = Flask(__name__)
 
@@ -38,12 +38,46 @@ def login ():
 def signup():
     return render_template("signup.html")
 
-# @app.route("/sumbit")
+@app.route("/sumbit" , methods = ["POST" , "GET"])
+
+def submit ():
+    
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+        
+        email = email.strip()
+        password = password.strip()
+
+        if email =="" or password =="":
+            return render_template ("error.html", message="Email/Password cannot be empty ")
+
+    execute_sql("INSERT INTO User (email , password) VALUES (?,?) ",  (email , password))
+
+    return render_template("login.html")
 
 
 
 
 
+@app.route("/submitlog" , methods = ["POST" ])
+
+
+def submitlog ():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+        
+        
+
+
+        check = execute_sql("SELECT EXISTS (SELECT 1 FROM User WHERE email = ?  AND password = ?)" , (  email ,password   )   )
+        
+        
+        if str(check) == "[(1,)]":
+            return render_template("welcome.html")
+        else:
+            return render_template("signup.html")
 
 
 

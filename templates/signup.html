@@ -4,13 +4,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <h1>Sign Up</h1>
+    
 </head>
 <body>
-    <form action="/sumbit" method="post">
+    <form action="/sumbit" method="POST">
         <label for="email">Email</label>
-        <input type="text" name="email" id="email">
-        <input type="text" name="password" id="password">
+        <input type="email" name="email" id="email" placeholder="example@gmail.com" required> <br>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="********" required><br>
 
+    <button type="submit">Done</button>  
     </form>
 </body>
 </html>

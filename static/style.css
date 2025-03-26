@@ -1,0 +1,13 @@
+.profit-container, .deficit-container {
+  display: none;
+}
+
+/* Show profit input when 'Win' is selected */
+#win:checked ~ .profit-container {
+  display: block;
+}
+
+/* Show deficit input when 'Loss' is selected */
+#loss:checked ~ .deficit-container {
+  display: block;
+}

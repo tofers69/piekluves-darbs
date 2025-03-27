@@ -1,6 +1,7 @@
 from flask import Flask, render_template , request , session
 import sqlite3
 import os
+import calendar
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -25,11 +26,7 @@ def execute_sql(cmd , vals=None):
 @app.route("/")
 def welcome():
    
-    # Uztaisīta Lietotāju datu saglabāšanas tabula
-    execute_sql("CREATE TABLE IF NOT EXISTS User(\
-                user_id INTEGER PRIMARY KEY,\
-                email TEXT NOT NULL UNIQUE,\
-                password TEXT NOT NULL)")
+    
     
     return render_template("welcome.html")
 
@@ -54,7 +51,7 @@ def home():
 @app.route("/journal")
 def journal():
     execute_sql("CREATE TABLE IF NOT EXISTS Trades(\
-                date TEXT ,\
+                date DATE ,\
                 symbol TEXT,\
                 buy_sell TEXT,\
                 win_loss TEXT,\
@@ -65,18 +62,31 @@ def journal():
                 trade_id INTEGER PRIMARY KEY,\
                 user_id INTEGER )")
 
+    user_id = session["user_id"]
+    mytrades =  execute_sql("SELECT date , symbol , buy_sell , win_loss, pnl , risk , confidence , description FROM Trades  WHERE user_id  = ? ", (user_id,))
+
+    year = 2025  # The year to display
+    full_calendar = ""
 
     
-    
+    for month in range(3, 4):
+        cal = calendar.HTMLCalendar().formatmonth(year, month)
+
+        
+        for day in range(1, 32):
+            day_str = f'>{day}<'
+            if day_str in cal:
+                cal = cal.replace(day_str, f'><a href="/new_trade-{year}-{month}-{day}"><button type="button">{day}</button></a><')
+
+        full_calendar += f"<h3>{calendar.month_name[month]} {year}</h3>{cal}"
+
+    return render_template ("journal.html", mytrades =mytrades , full_calendar =full_calendar ) 
 
 
+@app.route("/new_trade-<int:year>-<int:month>-<int:day>")
+def new_trade(year, month, day):
+    return render_template("newtrade.html", year=year, month=month, day=day)
 
-    return render_template ("journal.html" ) 
-
-@app.route("/new_trade")
-def new_trade():
-
-    return render_template ("newtrade.html")
 
 
 @app.route("/sumbit" , methods = ["POST" , "GET"])
@@ -163,7 +173,7 @@ def submit_trade():
         execute_sql("INSERT INTO Trades (date , symbol , buy_sell , win_loss, pnl , risk , confidence , description , user_id) VALUES(?,?,?,?,?,?,?,?,?) " , (date , symbol , buy_sell , win_loss , pnl , risk , confidence , description , user_id))
         
         
-    return execute_sql("SELECT  * FROM Trades")
+    return execute_sql("SELECT  * FROM Trades ORDER BY date ASC")
 
 
 

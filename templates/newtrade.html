@@ -9,7 +9,8 @@
 <body>
     <form action="/submit_trade" method="post">
         <label for="date">Date</label>
-        <input type="date" name="date" id="date" required><br>
+        <input type="text" name="date" id="date" value="{{ year }}-{{ month }}-{{ day }}" readonly><br>
+
 
         <label for="symbol">Symbol</label>
         <input type="text" name="symbol" id="symbol" placeholder="Nasdaq 100" required><br>
@@ -59,3 +60,9 @@
     <a href="/journal"><button type="button">Journal</button></a>
 </body>
 </html>
+
+
+
+
+
+

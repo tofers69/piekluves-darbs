@@ -1,8 +1,8 @@
-from flask import Flask, render_template , request , session
+from flask import Flask, render_template , request , session ,redirect
 import sqlite3
 import os
 import calendar
-
+from datetime import datetime
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
@@ -62,8 +62,8 @@ def journal():
                 trade_id INTEGER PRIMARY KEY,\
                 user_id INTEGER )")
 
-    user_id = session["user_id"]
-    mytrades =  execute_sql("SELECT date , symbol , buy_sell , win_loss, pnl , risk , confidence , description FROM Trades  WHERE user_id  = ? ", (user_id,))
+    # user_id = session["user_id"]
+    # mytrades =  execute_sql("SELECT date , symbol , buy_sell , win_loss, pnl , risk , confidence , description FROM Trades  WHERE user_id  = ? ", (user_id,))
 
     year = 2025  # The year to display
     full_calendar = ""
@@ -74,13 +74,25 @@ def journal():
 
         
         for day in range(1, 32):
+            date = (f"{year}-{month}-{day}")
+            # Katrai dienai aprēķinu kopēju peļņu/zaudi
+            pnl = execute_sql("SELECT COALESCE((SELECT SUM(pnl) FROM Trades WHERE win_loss = 'win' AND date = ?), 0)-COALESCE((SELECT SUM(pnl) FROM Trades WHERE win_loss = 'loss' AND date = ?), 0) AS result ", (date, date))
+            # Pārbaudu katrai dienai vai ir peļņa , zaude vai pa nullēm ,lai varētu katrai but savādāks dizains
+            if pnl[0][0] < 0:
+                id = "-day"
+            elif pnl[0][0] > 0 :
+                id = "+day"
+            else:
+                id = "day"
+                
+            
             day_str = f'>{day}<'
             if day_str in cal:
-                cal = cal.replace(day_str, f'><a href="/new_trade-{year}-{month}-{day}"><button type="button">{day}</button></a><')
+                cal = cal.replace(day_str, f'><a href="/new_trade-{year}-{month}-{day}" id = {id} ><button type="button">{day} <br> {pnl[0][0]} € </button></a><')
 
-        full_calendar += f"<h3>{calendar.month_name[month]} {year}</h3>{cal}"
+        full_calendar += f"{cal}"
 
-    return render_template ("journal.html", mytrades =mytrades , full_calendar =full_calendar ) 
+    return render_template ("journal.html",  full_calendar =full_calendar  ) 
 
 
 @app.route("/new_trade-<int:year>-<int:month>-<int:day>")
@@ -173,7 +185,7 @@ def submit_trade():
         execute_sql("INSERT INTO Trades (date , symbol , buy_sell , win_loss, pnl , risk , confidence , description , user_id) VALUES(?,?,?,?,?,?,?,?,?) " , (date , symbol , buy_sell , win_loss , pnl , risk , confidence , description , user_id))
         
         
-    return execute_sql("SELECT  * FROM Trades ORDER BY date ASC")
+    return redirect ("/journal")
 
 
 

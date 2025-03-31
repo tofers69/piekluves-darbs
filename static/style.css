@@ -1,13 +1,78 @@
+h1 {
+  display: flex;
+  
+  justify-content: center;
+}
+
+body {
+  background-color: rgb(57, 57, 57);
+  color: white;
+}
+
 .profit-container, .deficit-container {
   display: none;
 }
 
-/* Show profit input when 'Win' is selected */
+
 #win:checked ~ .profit-container {
   display: block;
 }
 
-/* Show deficit input when 'Loss' is selected */
+
 #loss:checked ~ .deficit-container {
   display: block;
+}
+
+
+.calendar-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 70vh; 
+  
+  
+}
+
+#day button {
+  background-color: gray;
+  width: 50px;
+  height: 50px;
+  border-collapse: collapse; 
+  border: none;
+  font-family: arial;
+  color: white;
+}
+
+#\-day button {
+  background-color: #F44336;
+  width: 50px;
+  height: 50px;
+  border-collapse: collapse; 
+  border: none;
+  font-family: arial;
+  color: white;
+}
+
+#\+day button {
+  background-color: #4CAF50;
+  width: 50px;
+  height: 50px;
+  border-collapse: collapse; 
+  border: none;
+  font-family: arial;
+  color: white;
+}
+
+
+
+
+table {
+  border-collapse: collapse; 
+  
+}
+
+td, th {
+  border: 0.5px solid rgb(152, 151, 151); 
+  text-align: center; 
+  
 }

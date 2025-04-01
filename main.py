@@ -1,4 +1,4 @@
-from flask import Flask, render_template , request , session ,redirect
+from flask import Flask, render_template , request , session ,redirect , url_for
 import sqlite3
 import os
 import calendar
@@ -48,7 +48,7 @@ def home():
 
 
 # Izveidoju tabulu ,kur tiks saglabāti ieraksti par akcijas, kripto utt tirgu pirkumiem
-@app.route("/journal")
+@app.route("/journal" , methods=[ "POST" , "GET"])
 def journal():
     execute_sql("CREATE TABLE IF NOT EXISTS Trades(\
                 date DATE ,\
@@ -62,22 +62,27 @@ def journal():
                 trade_id INTEGER PRIMARY KEY,\
                 user_id INTEGER )")
 
-    # user_id = session["user_id"]
     # mytrades =  execute_sql("SELECT date , symbol , buy_sell , win_loss, pnl , risk , confidence , description FROM Trades  WHERE user_id  = ? ", (user_id,))
 
-    year = 2025  # The year to display
-    full_calendar = ""
-
+    current_date = datetime.now()
+    year = request.form.get("year", current_date.year, type=int)
+    month = request.form.get("month", current_date.month, type=int)
     
-    for month in range(3, 4):
-        cal = calendar.HTMLCalendar().formatmonth(year, month)
-
+    full_calendar=""
+    cal = calendar.HTMLCalendar().formatmonth(year, month)
+    
+   
+    
         
-        for day in range(1, 32):
+
+    user_id = session["user_id"]
+    for day in range(1, 32):
+        
+        try:
+            
             date = (f"{year}-{month}-{day}")
             # Katrai dienai aprēķinu kopēju peļņu/zaudi
-            pnl = execute_sql("SELECT COALESCE((SELECT SUM(pnl) FROM Trades WHERE win_loss = 'win' AND date = ?), 0)-COALESCE((SELECT SUM(pnl) FROM Trades WHERE win_loss = 'loss' AND date = ?), 0) AS result ", (date, date))
-            # Pārbaudu katrai dienai vai ir peļņa , zaude vai pa nullēm ,lai varētu katrai but savādāks dizains
+            pnl = execute_sql("SELECT COALESCE((SELECT SUM(pnl) FROM Trades WHERE win_loss = 'win' AND date = ? AND user_id = ?), 0)-COALESCE((SELECT SUM(pnl) FROM Trades WHERE win_loss = 'loss' AND date = ? AND user_id = ?), 0) AS result ", (date, user_id , date , user_id))            # Pārbaudu katrai dienai vai ir peļņa , zaude vai pa nullēm ,lai varētu katrai but savādāks dizains
             if pnl[0][0] < 0:
                 id = "-day"
             elif pnl[0][0] > 0 :
@@ -88,16 +93,21 @@ def journal():
             
             day_str = f'>{day}<'
             if day_str in cal:
-                cal = cal.replace(day_str, f'><a href="/new_trade-{year}-{month}-{day}" id = {id} ><button type="button">{day} <br> {pnl[0][0]} € </button></a><')
+                cal = cal.replace(day_str, f'><a href="/new_trade-{year}-{month:02d}-{day:02d}" id="{id}"><button type="button">{day} <br> {pnl[0][0]} € </button></a><')
+        except ValueError:
+            continue
+    full_calendar += f"{cal}"
 
-        full_calendar += f"{cal}"
-
-    return render_template ("journal.html",  full_calendar =full_calendar  ) 
+    return render_template("journal.html", full_calendar=cal, year=year, month=month)
 
 
 @app.route("/new_trade-<int:year>-<int:month>-<int:day>")
 def new_trade(year, month, day):
-    return render_template("newtrade.html", year=year, month=month, day=day)
+    user_id = session["user_id"]
+    date = f"{year}-{month}-{day}"
+    trades = execute_sql("SELECT  date , symbol , buy_sell , win_loss, pnl , risk , confidence , description ,trade_id FROM Trades WHERE date  = ? AND user_id = ?" , (date , user_id) )
+    print(trades)
+    return render_template("newtrade.html", year=year, month=month, day=day , trades = trades)
 
 
 
@@ -136,7 +146,7 @@ def submit ():
 
 
 
-@app.route("/submitlog" , methods = ["POST" ])
+@app.route("/submitlog" , methods = ["POST" ,"GET"])
 
 
 def submitlog ():
@@ -185,9 +195,23 @@ def submit_trade():
         execute_sql("INSERT INTO Trades (date , symbol , buy_sell , win_loss, pnl , risk , confidence , description , user_id) VALUES(?,?,?,?,?,?,?,?,?) " , (date , symbol , buy_sell , win_loss , pnl , risk , confidence , description , user_id))
         
         
-    return redirect ("/journal")
+    year, month, day = date.split("-")
 
+    
+    return redirect(url_for("new_trade", year=year, month=month, day=day))
 
+# Opcija izdzēst kādu ievadījumu no datubāzes
+@app.route ("/delete" , methods = ["POST"])
+def delete():
+    trade_id = request.form["trade_id"]
+    date = request.form["date"]
+    execute_sql("DELETE FROM Trades WHERE trade_id = ?" , (trade_id,))
+
+    year, month, day = date.split("-")
+
+    
+    return redirect(url_for("new_trade", year=year, month=month, day=day))
+    
 
 
 

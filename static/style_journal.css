@@ -1,0 +1,67 @@
+h1 {
+    display: flex;
+    
+    justify-content: center;
+  }
+body {
+    background-color: rgb(57, 57, 57);
+    color: white;
+    font-family: arial;
+    
+  }
+
+.calendar-container {
+display: flex;
+flex-direction: column; /* Stack elements vertically */
+align-items: center;
+height: 70vh;
+
+    
+}
+#utility {
+    background-color: gray;
+    border: white;
+    color: white;
+    padding: 5px;
+  }
+
+#day button {
+    background-color: gray;
+    width: 50px;
+    height: 50px;
+    border-collapse: collapse; 
+    border: none;
+    font-family: arial;
+    color: white;
+  }
+  
+  #\-day button {
+    background-color: #F44336;
+    width: 50px;
+    height: 50px;
+    border-collapse: collapse; 
+    border: none;
+    font-family: arial;
+    color: white;
+  }
+  
+  #\+day button {
+    background-color: #4CAF50;
+    width: 50px;
+    height: 50px;
+    border-collapse: collapse; 
+    border: none;
+    font-family: arial;
+    color: white;
+  }
+
+table {
+  border-collapse: collapse; 
+  
+}
+
+td, th {
+  border: 0.5px solid rgb(152, 151, 151); 
+  text-align: center; 
+  
+}

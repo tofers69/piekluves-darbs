@@ -7,10 +7,55 @@ h1 {
 body {
   background-color: rgb(57, 57, 57);
   color: white;
+  font-family: arial;
 }
 
-.profit-container, .deficit-container {
+
+.radio-group {
+  display: flex;
+  gap: 10px; 
+  margin-bottom: 10px;
+}
+
+
+.radio-group input[type="radio"] {
   display: none;
+}
+
+
+.radio-group label {
+  display: inline-block;
+  padding: 10px 20px;
+  background: lightgray;
+  color: black !important; 
+  font-size: 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+#win:checked + label {
+  background: green;
+  color: white !important; 
+  border-color: green;
+}
+
+
+#loss:checked + label {
+  background: red;
+  color: white !important; 
+  border-color: red;
+}
+
+.radio-group input[type="radio"]:checked + label {
+  background: darkslategrey;
+  border-color:darkslategrey;
+}
+
+
+.radio-group label:hover {
+  background: darkgray;
 }
 
 
@@ -18,61 +63,96 @@ body {
   display: block;
 }
 
-
 #loss:checked ~ .deficit-container {
   display: block;
 }
 
 
-.calendar-container {
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-  height: 70vh; 
-  
-  
+
+.profit-container, .deficit-container {
+  display: none;
 }
 
-#day button {
-  background-color: gray;
-  width: 50px;
-  height: 50px;
-  border-collapse: collapse; 
-  border: none;
-  font-family: arial;
+
+
+
+
+
+#utility {
+  background-color: lightgray;
+  border: white;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.form-container, #history {
+  width: 60%; 
+  max-width: 600px; 
+  margin: 0 auto; 
+  padding: 25px; 
+  border: 1px solid gray;
+  border-radius: 10px;
+  background: gray;
   color: white;
+  margin-bottom: 20px; 
 }
-
-#\-day button {
-  background-color: #F44336;
-  width: 50px;
-  height: 50px;
-  border-collapse: collapse; 
-  border: none;
-  font-family: arial;
-  color: white;
-}
-
-#\+day button {
-  background-color: #4CAF50;
-  width: 50px;
-  height: 50px;
-  border-collapse: collapse; 
-  border: none;
-  font-family: arial;
-  color: white;
-}
-
-
-
 
 table {
-  border-collapse: collapse; 
-  
+  width: 100%; 
+  border-collapse: collapse;
 }
 
 td, th {
-  border: 0.5px solid rgb(152, 151, 151); 
-  text-align: center; 
-  
+  padding: 10px;
+  border: 0.5px solid rgb(152, 151, 151);
+  text-align: center;
+  position: relative;
 }
+
+.form-container input {
+  width: 100%; 
+  padding: 10px; 
+  font-size: 1.2rem; 
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+  margin-bottom: 10px; 
+}
+
+.confidence-container {
+  display: flex;
+  align-items: center; 
+  gap: 10px; 
+  width: 100%; 
+}
+
+.confidence-container input {
+  flex-grow: 1; 
+}
+
+.form-container input[type="radio"] {
+  transform: scale(1.5); 
+  margin-right: 10px;
+}
+
+.form-container label {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+  display: block;
+}
+
+
+#remove_button {
+  width: 100%; 
+  height: 100%; 
+  background-color: #F44336; 
+  color: white; 
+  border: none; 
+  position: absolute;
+  top: 0;
+  left: 0; 
+  cursor: pointer;
+}
+

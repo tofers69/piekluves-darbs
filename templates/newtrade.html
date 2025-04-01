@@ -7,7 +7,8 @@
     <h1>Add Your Trade</h1>
 </head>
 <body>
-    <form action="/submit_trade" method="post">
+<div class="form-container">
+    <form action="/submit_trade" method="post" >
         <label for="date">Date</label>
         <input type="text" name="date" id="date" value="{{ year }}-{{ month }}-{{ day }}" readonly><br>
 
@@ -15,49 +16,99 @@
         <label for="symbol">Symbol</label>
         <input type="text" name="symbol" id="symbol" placeholder="Nasdaq 100" required><br>
 
-        <p>Buy or Sell?</p>
-        <label for="buy">Buy</label>
-        <input type="radio" id="buy" name="buy_sell" value="buy" required>
-        <label for="sell">Sell</label>
-        <input type="radio" name="buy_sell" id="sell" value="sell" required> <br>
-
-
-
         <!-- Ar css palīdzību uztaisiju funkciju ,kas ,kad uzpiež uz "win" vai "loss" tad parādas ievades lauks ar attiecīgu "profit" vai "loss" ,kas tiks ievietots datubāzē -->
-        <p>Win or Loss?</p>
-    <input type="radio" name="win_loss" id="win" value="win" required>
-    <label for="win">Win</label>
-    
-    <input type="radio" name="win_loss" id="loss" value="loss" required>
-    <label for="loss">Loss</label><br>
-
-    
-    <div class="profit-container">
-        <label for="profit">Profit €</label>
-        <input type="number" name="profit" id="profit" >
-    </div>
-
-    
-    <div class="deficit-container">
-        <label for="deficit">Loss €</label>
-        <input type="number" name="deficit" id="deficit">
-    </div>
+        
+        <div class="radio-group">
+            <input type="radio" id="buy" name="buy_sell" value="Buy" required>
+            <label for="buy">Buy</label>
+        
+            <input type="radio" id="sell" name="buy_sell" value="Sell" required>
+            <label for="sell">Sell</label>
+        </div>
+        
+        <!-- Win/Loss Radio Buttons -->
+        <div class="radio-group">
+            <input type="radio" id="win" name="win_loss" value="Win" required>
+            <label for="win">Win</label>
+        
+            <input type="radio" id="loss" name="win_loss" value="Loss" required>
+            <label for="loss">Loss</label>
+        
+            <!-- Profit/Loss Input Fields -->
+            <div class="profit-container">
+                <label for="profit">Profit €</label>
+                <input type="number" name="profit" id="profit">
+            </div>
+        
+            <div class="deficit-container">
+                <label for="deficit">Loss €</label>
+                <input type="number" name="deficit" id="deficit">
+            </div>
+        </div>
         
 
-        <label for="risk">Risk </label>
-        <input type="number" name="risk" id="risk" min="0.01" max="100" step="0.01" required>%<br>
+        
 
-        <label for="confidence">Confidence in trade <br><small>Gambling</small></label>
-        <input type="range" name="confidence" id="confidence" min="1" max="5" required>
-        <small>Hedge Fund</small><br>
+        <label for="risk">Risk % </label>
+        <input type="number" name="risk" id="risk" min="0.01" max="100" step="0.01" required><br>
+
+        <label for="confidence">Confidence in trade</label>
+        <div class="confidence-container">
+            <small>Gambling</small>
+            <input type="range" name="confidence" id="confidence" min="1" max="5" required>
+            <small>Hedge Fund</small>
+        </div>
+        
 
         <label for="description">Description</label>
         <input type="text" id="description" name="description"><br>
 
-        <button type="submit">Add</button>
+        <button type="submit" id="utility">Add</button>
     </form>
+</div>
+   
 
-    <a href="/journal" ><button type="button">Journal</button></a>
+{%if trades%}
+    <table id="history"> 
+        <caption><strong>Your trades from {{trades[0][0]}}</strong></caption>
+        
+            <tr>
+                <th>Symbol</th>
+                <th>Buy or Sell</th>
+                <th>Win or Loss</th>
+                <th>Profit&Loss</th>
+                <th>Risk%</th>
+                <th>Confidence 1-5</th>
+                <th>Description</th>
+                
+            </tr>
+        
+            {%for trade in trades%}
+            <tr>    
+                
+                
+                <td>{{trade[1]}}</td>   
+                <td>{{trade[2]}}</td>
+                <td>{{trade[3]}}</td>
+                <td>{{trade[4]}} €</td>
+                <td>{{trade[5]}}</td>
+                <td>{{trade[6]}}</td>
+                <td>{{trade[7]}}</td>
+                <form action="/delete" method="POST">
+                    <td>
+                        <input type="hidden" name="trade_id" value="{{trade[8]}}">
+                        <input type="hidden" name = "date" value="{{trade[0]}}">
+                        <button type="submit" id="remove_button">X</button>
+                    </td>
+                </form>
+                    
+            </tr>
+            {%endfor%}
+    </table>
+{%else%}
+    {##}
+{%endif%}
+    <a href="/journal" ><button type="button" id="utility">Back To Journal</button></a>
 </body>
 </html>
 

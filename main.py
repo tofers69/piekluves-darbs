@@ -89,6 +89,8 @@ def journal():
                 id = "+day"
             else:
                 id = "day"
+            
+            
                 
             
             day_str = f'>{day}<'
@@ -106,11 +108,32 @@ def new_trade(year, month, day):
     user_id = session["user_id"]
     date = f"{year}-{month}-{day}"
     trades = execute_sql("SELECT  date , symbol , buy_sell , win_loss, pnl , risk , confidence , description ,trade_id FROM Trades WHERE date  = ? AND user_id = ?" , (date , user_id) )
-    print(trades)
+    
     return render_template("newtrade.html", year=year, month=month, day=day , trades = trades)
 
+# Skats kur varēs apskatīt analītikas un statistikas par veiktajiem "tradiem".
+@app.route("/analytics")
+def stats ():
+    user_id = session["user_id"]
+    
+    wins = execute_sql("SELECT COUNT(*) FROM Trades Where user_id = ? AND win_loss = 'win' " , (user_id,))
+    trade_amount = execute_sql("SELECT COUNT(*) FROM Trades Where user_id = ?  " , (user_id,))
+    win_rate = round(wins[0][0]/trade_amount[0][0] * 100)
+    
+    highest_win = execute_sql("SELECT pnl , date FROM Trades WHERE win_loss = 'win' AND user_id = ? ORDER BY pnl DESC LIMIT 1  " , (user_id,)) 
+    highest_loss = execute_sql("SELECT pnl , date FROM Trades WHERE win_loss = 'loss' AND user_id = ? ORDER BY pnl DESC LIMIT 1  " , (user_id,)) 
 
+    total_pnl = execute_sql("SELECT COALESCE((SELECT SUM(pnl) FROM Trades WHERE win_loss = 'win' AND user_id = ?), 0) - ""COALESCE((SELECT SUM(pnl) FROM Trades WHERE win_loss = 'loss' AND user_id = ?), 0)",(user_id, user_id))
+    
+    average_win = execute_sql("SELECT AVG(pnl) FROM Trades WHERE win_loss = 'win' AND user_id = ? " , (user_id,)) 
+    average_loss = execute_sql("SELECT AVG(pnl) FROM Trades WHERE win_loss = 'loss' AND user_id = ? " , (user_id,))
+    win_loss_ratio = round( average_win[0][0] / average_loss[0][0] ,1)
 
+    most_traded = execute_sql("SELECT symbol, COUNT(symbol) AS  symbol_count FROM Trades WHERE user_id = ? GROUP BY symbol ORDER BY symbol_count DESC LIMIT 1" , (user_id,))
+    
+    return render_template("analytics.html" ,win_rate = win_rate ,trade_amount = trade_amount[0][0] , highest_win = highest_win[0][0] , highest_win_date = highest_win[0][1] , highest_loss = highest_loss[0][0] ,highest_loss_date = highest_loss[0][1] , total_pnl = total_pnl[0][0] , average_win = round(average_win[0][0],2), average_loss =round( average_loss[0][0],2) ,win_loss_ratio = win_loss_ratio ,most_traded = most_traded[0][0])
+    
+        
 @app.route("/sumbit" , methods = ["POST" , "GET"])
 
 def submit ():
@@ -186,12 +209,13 @@ def submit_trade():
         description = request.form["description"]
         # saglabāto sessijas lietotāja ID ievieto kopā ar tirgojumu ,lai varētu kategorizēt datus priekš katra lietotāja
         user_id = session["user_id"]
-        if win_loss == "loss":
-            pnl = request.form["deficit"]
-        else:
-            pnl = request.form["profit"]
-
         print(win_loss)
+        if win_loss == "win":
+            pnl = request.form["profit"]
+        else:
+            pnl = request.form["deficit"]
+
+        
         execute_sql("INSERT INTO Trades (date , symbol , buy_sell , win_loss, pnl , risk , confidence , description , user_id) VALUES(?,?,?,?,?,?,?,?,?) " , (date , symbol , buy_sell , win_loss , pnl , risk , confidence , description , user_id))
         
         

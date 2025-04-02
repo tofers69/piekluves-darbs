@@ -69,10 +69,12 @@ body {
 
 
 
-.profit-container, .deficit-container {
+.profit-container{
   display: none;
 }
-
+.deficit-container {
+  display: none;
+}
 
 
 
@@ -85,6 +87,7 @@ body {
   padding: 10px;
   border-radius: 5px;
   font-size: 1rem;
+  cursor: pointer;
 }
 
 .form-container, #history {

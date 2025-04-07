@@ -1,67 +1,135 @@
-h1 {
-    display: flex;
-    
-    justify-content: center;
-  }
+/* Base Styles */
 body {
-    background-color: rgb(57, 57, 57);
-    color: white;
-    font-family: arial;
-    
-  }
+  background-color: #1a1a1a;
+  color: white;
+  font-family: Arial;
+  padding: 30px;
+  font-size: 18px;
+}
 
+/* Header */
+h1 {
+  display: flex;
+  justify-content: center;
+  font-size: 3em;
+  margin: 20px 0;
+}
+
+/* Calendar Container */
 .calendar-container {
-display: flex;
-flex-direction: column; /* Stack elements vertically */
-align-items: center;
-height: 70vh;
-
-    
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  min-height: 80vh;
+  padding: 30px;
+  margin: 0px auto;
+  max-width: 1200px;
 }
+
+/* Utility Elements */
 #utility {
-    background-color: gray;
-    border: white;
-    color: white;
-    padding: 5px;
-  }
-
-#day button {
-    background-color: gray;
-    width: 50px;
-    height: 50px;
-    border-collapse: collapse; 
-    border: none;
-    font-family: arial;
-    color: white;
-  }
-  
-#\-day button {
-  background-color: #F44336;
-  width: 50px;
-  height: 50px;
-  border-collapse: collapse; 
-  border: none;
-  font-family: arial;
+  background-color: darkslategrey;
+  border: white;
   color: white;
-}
-  
-#\+day button {
-  background-color: #4CAF50;
-  width: 50px;
-  height: 50px;
-  border-collapse: collapse; 
-  border: none;
-  font-family: arial;
-  color: white;
+  padding: 10px 15px;
+  font-size: 1.1em;
+  margin: 5px;
 }
 
+select#utility, 
+input#utility {
+  height: 40px;
+  font-size: 1em;
+  border-radius: 10px;
+}
+
+/* Calendar Table - Modified to fix button sizing */
 table {
-  border-collapse: collapse; 
-  
+  border-collapse: collapse;
+  width: 80%;
+  max-width: 900px;
+  margin: 10px auto;
+  font-size: 1.2em;
+  table-layout: fixed; /* Added for consistent cell sizing */
 }
 
 td, th {
-  border: 0.5px solid rgb(152, 151, 151); 
-  text-align: center; 
-  
+  border: 0.5px solid darkslategray;
+  text-align: center;
+  padding: 0; 
+  min-width: 60px;
+  height: 80px;
+  position: relative; /* Added for button positioning */
 }
+
+/* Day Buttons - Modified to fill cells */
+#day button,
+#\-day button,
+#\+day button {
+  position: absolute; /* Fill the cell completely */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  font-family: Arial;
+  color: white;
+  font-size: 1.0em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+#day button {
+  background-color: darkslategray;
+}
+
+#\-day button {
+  background-color: #F44336;
+}
+
+#\+day button {
+  background-color: #4CAF50;
+}
+
+/* Hover Effects */
+button#utility:hover, 
+a[href="/home"] button#utility:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+#day button:hover, 
+#\-day button:hover, 
+#\+day button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255,255,255,0.2);
+  z-index: 1;
+}
+
+/* Selecter Section */
+.selecter  {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #252525;
+  border-radius: 10px;
+}
+
+.selecter button{
+  border-radius: 10px;
+}
+
+
+/* Back Button */
+button#utility {
+  font-size: 1.2em;
+  padding: 12px 25px;
+  margin-top: -10px;
+  border-radius: 10px;
+}
+

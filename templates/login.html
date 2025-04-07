@@ -1,22 +1,25 @@
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <h1>LOG IN</h1>
     <title>Log In</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_auth.css') }}">
 </head>
 <body>
-    <p style="color: red;">{{message}}</p>
-    <form action="/submitlog" method="POST">
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" placeholder="example@gmail.com"> <br>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" placeholder="********"> <br><br>
-
-    <button type="submit">Done</button>
-
-    </form> 
-    <p>Don't have an account?<a href="/signup"><button type="button">Sign Up</button></a></p>
-
+    <h1>LOG IN</h1>
+    <div class="auth-form">
+        <p class="error-message">{{message}}</p>
+        <form action="/submitlog" method="POST">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="example@gmail.com">
+            
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="********">
+            
+            <button type="submit">Log In</button>
+        </form>
+    </div>
+    <div class="auth-footer">
+        <p>Don't have an account?</p>
+        <a href="/signup" class="auth-link">Sign Up</a>
+    </div>
 </body>
-</html>

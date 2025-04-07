@@ -5,7 +5,7 @@ h1 {
 }
 
 body {
-  background-color: rgb(57, 57, 57);
+  background-color: #1a1a1a;
   color: white;
   font-family: arial;
 }
@@ -26,8 +26,8 @@ body {
 .radio-group label {
   display: inline-block;
   padding: 10px 20px;
-  background: lightgray;
-  color: black !important; 
+  background: rgb(76, 128, 128);
+  color: white !important; 
   font-size: 1.2rem;
   border-radius: 5px;
   cursor: pointer;
@@ -81,13 +81,16 @@ body {
 
 
 #utility {
-  background-color: lightgray;
-  border: white;
-  color: black;
+  background-color: darkslategray;
+  border-color:  darkslategray;
+  color: white;
   padding: 10px;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 1.1rem;
   cursor: pointer;
+  font-family: arial;
+  border-radius: 8px;
+  
 }
 
 .form-container, #history {
@@ -95,9 +98,10 @@ body {
   max-width: 600px; 
   margin: 0 auto; 
   padding: 25px; 
-  border: 1px solid gray;
+  
+  border-color: #252525;
   border-radius: 10px;
-  background: gray;
+  background: #252525;
   color: white;
   margin-bottom: 20px; 
 }
@@ -105,6 +109,8 @@ body {
 table {
   width: 100%; 
   border-collapse: collapse;
+  border-color: dark;
+  border-color: #252525;
 }
 
 td, th {
@@ -112,6 +118,7 @@ td, th {
   border: 0.5px solid rgb(152, 151, 151);
   text-align: center;
   position: relative;
+  border-color: #252525;
 }
 
 .form-container input {
@@ -130,9 +137,6 @@ td, th {
   width: 100%; 
 }
 
-.confidence-container input {
-  flex-grow: 1; 
-}
 
 .form-container input[type="radio"] {
   transform: scale(1.5); 

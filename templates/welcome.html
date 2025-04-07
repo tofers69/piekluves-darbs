@@ -1,13 +1,15 @@
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <h1>Welcome</h1>
-    
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_auth.css') }}">
 </head>
 <body>
-    <a href="/login "> <button type="button">Log in</button></a>
-    <a href="/signup "> <button type="button">Sign up</button></a>
+    <div class="welcome-container">
+        <h1>Trading Journal</h1>
+        <div class="button-container">
+            <a href="/login"><button class="welcome-button">Log In</button></a>
+            <a href="/signup"><button class="welcome-button">Sign Up</button></a>
+        </div>
+    </div>
 </body>
-</html>

@@ -2,13 +2,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <h1>Home</h1>
+    <title>Trade Journal Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_home.css') }}">
 </head>
 <body>
-    
-    <a href="/journal"><button type="button">My Journal</button></a>
-    <a href="/analytics"><button type="button">Trading Analytics</button></a>
-    <a href="/login"><button type="button">Log Out</button></a>
+    <div class="content-container">
+        <!-- Left Column -->
+        <div class="left-column">
+            <h1>Home</h1>
+            <div class="button-container">
+                <a href="/journal"><button type="button">My Journal</button></a>
+                <a href="/analytics"><button type="button">Trade Analytics</button></a>
+                <a href="/login"><button type="button">Log Out</button></a>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="right-column">
+            <div class="table-section">
+                <h2 class="table-header">Today's Worldwide Economic Reports</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Currency</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in news %}
+                            <tr>
+                                {% for item in row %}
+                                    <td>{{ item }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

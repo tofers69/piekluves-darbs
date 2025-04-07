@@ -1,0 +1,169 @@
+/* style_home.css - Complete version with table layout */
+
+/* Base Styles */
+body {
+    background-color: #1a1a1a;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 30px;
+    min-height: 100vh;
+}
+
+/* Header - Left aligned */
+h1 {
+    text-align: left;
+    font-size: 3em;
+    margin: 20px 0 40px 0;
+    width: 100%;
+    max-width: 1200px;
+    padding-left: 20px;
+}
+
+/* Main Content Layout */
+.content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+@media (min-width: 992px) {
+    .content-container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+/* Left Column (Buttons) */
+.left-column {
+    width: 100%;
+}
+
+@media (min-width: 992px) {
+    .left-column {
+        width: 300px;
+        position: sticky;
+        top: 20px;
+    }
+}
+
+/* Right Column (Table) */
+.right-column {
+    flex: 1;
+    width: 100%;
+}
+
+/* Button Container - Left aligned */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 30px;
+    padding-left: 20px;
+}
+
+/* Button Styling with Icons */
+button {
+    background-color: darkslategray;
+    color: white;
+    border: none;
+    padding: 15px 25px 15px 60px; /* Extra left padding for icon */
+    font-size: 1.2em;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s ease;
+    position: relative;
+    text-align: left;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background-color: #2a5a5a;
+}
+
+/* Icon Base Styling */
+button::before {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Journal Button Icon (Calendar) */
+a[href="/journal"] button::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V8h14v12zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z'/%3E%3C/svg%3E");
+}
+
+/* Analytics Button Icon (Graph) */
+a[href="/analytics"] button::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z'/%3E%3C/svg%3E");
+}
+
+/* Logout Button Icon (Door) */
+a[href="/login"] button::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z'/%3E%3C/svg%3E");
+}
+
+/* Link Styling */
+a {
+    text-decoration: none;
+    display: block;
+    width: fit-content;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0;
+    background-color: #252525;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+th {
+    background-color: #2a5a5a;
+    font-weight: bold;
+    color: white;
+}
+
+
+
+/* Table Header Styling */
+.table-header {
+    margin: 30px 0 15px 0;
+    font-size: 1.8em;
+    color: #4CAF50;
+    position: relative;
+    padding-left: 15px;
+}
+
+
+
+/* Add this to make the table section stand out more */
+.table-section {
+    background-color: #252525;
+    padding: 20px;
+    border-radius: 10px;
+    
+}

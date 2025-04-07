@@ -5,14 +5,15 @@
     <title>Document</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <h1>Add Your Trade</h1>
+    
 </head>
 <body>
 <div class="form-container">
     <form action="/submit_trade" method="post" >
         <label for="date">Date</label>
         <input type="text" name="date" id="date" value="{{ year }}-{{ month }}-{{ day }}" readonly><br>
-
-
+        
+        
         <label for="symbol">Symbol</label>
         <input type="text" name="symbol" id="symbol" placeholder="Nasdaq 100" required><br>
 

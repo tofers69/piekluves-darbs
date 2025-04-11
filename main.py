@@ -6,13 +6,6 @@ import requests
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
-
-
-    
-    
-
-
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
@@ -35,10 +28,6 @@ def execute_sql(cmd , vals=None):
 
 @app.route("/")
 def welcome():
-    
-
-    
-    
     return render_template("welcome.html")
 
 
@@ -55,9 +44,7 @@ def signup():
 
 @app.route("/home")
 def home():
-    
 
-    
     return render_template ("home.html", news = session["news"])
 
 
@@ -76,8 +63,8 @@ def journal():
                 trade_id INTEGER PRIMARY KEY,\
                 user_id INTEGER )")
 
-    # mytrades =  execute_sql("SELECT date , symbol , buy_sell , win_loss, pnl , risk , confidence , description FROM Trades  WHERE user_id  = ? ", (user_id,))
-
+    
+    # Kalendāra izveide ar importētām funkcijām
     current_date = datetime.now()
     year = request.form.get("year", current_date.year, type=int)
     month = request.form.get("month", current_date.month, type=int)
@@ -85,10 +72,6 @@ def journal():
     full_calendar=""
     cal = calendar.HTMLCalendar().formatmonth(year, month)
     
-   
-    
-        
-
     user_id = session["user_id"]
     for day in range(1, 32):
         
@@ -103,12 +86,10 @@ def journal():
                 id = "+day"
             else:
                 id = "day"
-            
-            
-                
-            
+          
             day_str = f'>{day}<'
             if day_str in cal:
+                # Calendāram katrai dienai izveidoju pogu ,kuru uzspiežot var pievienot "trade" priekš tās dienas ,neievadot datumu
                 cal = cal.replace(day_str, f'><a href="/new_trade-{year}-{month:02d}-{day:02d}" id="{id}"><button type="button">{day} <br> {pnl[0][0]} € </button></a><')
         except ValueError:
             continue
@@ -116,14 +97,13 @@ def journal():
 
     return render_template("journal.html", full_calendar=cal, year=year, month=month)
 
-
 @app.route("/new_trade-<int:year>-<int:month>-<int:day>")
+# funkcija ,kas tiek palaista uzspiežot uz jebkuru dienu kalendārā ,ar padoto datumu linkā
 def new_trade(year, month, day):
     user_id = session["user_id"]
     date = f"{year}-{month}-{day}"
+    # tiek saglabāti "tradi" no konkrēta datumu ,lai tos varētu parādīt ,kā vēsturi
     trades = execute_sql("SELECT  date , symbol , buy_sell , win_loss, pnl , risk , confidence , description ,trade_id FROM Trades WHERE date  = ? AND user_id = ?" , (date , user_id) )
-    
-   
     
     return render_template("newtrade.html", year=year, month=month, day=day , trades = trades )
 
@@ -151,6 +131,7 @@ def stats ():
         
         return render_template("analytics.html" ,win_rate = win_rate ,trade_amount = trade_amount[0][0] , highest_win = highest_win[0][0] , highest_win_date = highest_win[0][1] , highest_loss = highest_loss[0][0] ,highest_loss_date = highest_loss[0][1] , total_pnl = total_pnl[0][0] , average_win = round(average_win[0][0],2), average_loss =round( average_loss[0][0],2) ,win_loss_ratio = win_loss_ratio ,most_traded = most_traded[0][0])
     else:
+        # Lai analītikas par "traidiem" varētu but aprēķinātas ir vajadzīga vismaz viena uzvara un viena zaude
         return render_template("error.html", message = "Not Enough Trades For Analytics .Minimum : 1 Win & 1 Loss .")
         
 @app.route("/submit" , methods = ["POST" , "GET"])
@@ -164,10 +145,8 @@ def submit ():
         # Noņem liekas atstarpes
         email = email.strip()
         password = password.strip()
+        # Paroli teik "hashota" ar kriptogrāfiju , lai lietotāja dati būtu pasargāti
         hashed_password = generate_password_hash(password)
-
-
-        
 
         # Pārbauda vai ievadītais emails vai parole nav tuksš pēc atstarpju noņemšanas
         if email =="" or password =="":
@@ -183,15 +162,6 @@ def submit ():
         else :
             return render_template ( "signup.html", message ="An account with this email already exists")
              
-    
-
-
-
-
-
-
-@app.route("/submitlog" , methods = ["POST" ,"GET"])
-
 
 @app.route("/submitlog", methods=["POST", "GET"])
 def submitlog():
@@ -200,9 +170,13 @@ def submitlog():
         password = request.form["password"]
 
         user = execute_sql("SELECT user_id, password FROM User WHERE email = ?", (email,))
+
+        # Pārbauda vai ievadīta parole sakrīt ar "hashoto" paroli
         if user and check_password_hash(user[0][1], password):
+            # saglabā lietotāja id , priekš sesijas ,lai vēlāk varētu to lietotot priekš datubāzes lietošanas
             session["user_id"] = user[0][0]
 
+            # API finkcija ,kas savāc datus par pasaules ekomiskajām ziņām lietošanas bŗīža dienā ar limitu requestiem vienreiz piecās minūtēs
             url: str = "https://www.jblanked.com/news/api/forex-factory/calendar/today/"
             headers = {
                 "Content-Type": "application/json",
@@ -213,6 +187,7 @@ def submitlog():
 
             if response.status_code == 200:
                 data = response.json()
+                # Ja datu koppa nav tukša tiek atgriezti datu nosaukums , kuru valūtu ziņas ietekmē un datums
                 for result in data:
                     news.append([result["Name"], result["Currency"], result["Date"]])
             else:
@@ -220,7 +195,7 @@ def submitlog():
                 print(response.json())
 
             session["news"] = news
-            print(session["news"])
+            
 
             return render_template("home.html", news=news)
         else:
@@ -269,12 +244,6 @@ def delete():
     
     return redirect(url_for("new_trade", year=year, month=month, day=day))
     
-
-
-
-
-
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080 ,debug=True )

@@ -1,4 +1,4 @@
-/* Base Styles */
+
 body {
   background-color: #1a1a1a;
   color: white;
@@ -7,15 +7,12 @@ body {
   font-size: 18px;
 }
 
-/* Header */
 h1 {
   display: flex;
   justify-content: center;
   font-size: 3em;
   margin: 20px 0;
 }
-
-/* Calendar Container */
 .calendar-container {
   display: flex;
   flex-direction: column;
@@ -27,7 +24,6 @@ h1 {
   max-width: 1200px;
 }
 
-/* Utility Elements */
 #utility {
   background-color: darkslategrey;
   border: white;
@@ -44,14 +40,14 @@ input#utility {
   border-radius: 10px;
 }
 
-/* Calendar Table - Modified to fix button sizing */
+
 table {
   border-collapse: collapse;
   width: 80%;
   max-width: 900px;
   margin: 10px auto;
   font-size: 1.2em;
-  table-layout: fixed; /* Added for consistent cell sizing */
+  table-layout: fixed; 
 }
 
 td, th {
@@ -60,14 +56,14 @@ td, th {
   padding: 0; 
   min-width: 60px;
   height: 80px;
-  position: relative; /* Added for button positioning */
+  position: relative; 
 }
 
-/* Day Buttons - Modified to fill cells */
+
 #day button,
 #\-day button,
 #\+day button {
-  position: absolute; /* Fill the cell completely */
+  position: absolute; 
   top: 0;
   left: 0;
   right: 0;
@@ -96,14 +92,11 @@ td, th {
 #\+day button {
   background-color: #4CAF50;
 }
-
-/* Hover Effects */
 button#utility:hover, 
 a[href="/home"] button#utility:hover {
   transform: scale(1.05);
   transition: transform 0.2s ease;
 }
-
 #day button:hover, 
 #\-day button:hover, 
 #\+day button:hover {
@@ -111,21 +104,16 @@ a[href="/home"] button#utility:hover {
   box-shadow: 0 0 10px rgba(255,255,255,0.2);
   z-index: 1;
 }
-
-/* Selecter Section */
 .selecter  {
   margin-bottom: 20px;
   padding: 15px;
   background-color: #252525;
   border-radius: 10px;
 }
-
 .selecter button{
   border-radius: 10px;
 }
 
-
-/* Back Button */
 button#utility {
   font-size: 1.2em;
   padding: 12px 25px;

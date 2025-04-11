@@ -1,4 +1,3 @@
-/* style_auth.css - Combined login/signup styles */
 body {
     background-color: #1a1a1a;
     color: white;
@@ -94,8 +93,6 @@ button:hover {
     background-color: rgba(244, 67, 54, 0.1);
     border-radius: 5px;
 }
-
-/* Welcome page specific styles */
 .welcome-container {
     display: flex;
     flex-direction: column;

@@ -3,26 +3,19 @@ h1 {
   
   justify-content: center;
 }
-
 body {
   background-color: #1a1a1a;
   color: white;
   font-family: arial;
 }
-
-
 .radio-group {
   display: flex;
   gap: 10px; 
   margin-bottom: 10px;
 }
-
-
 .radio-group input[type="radio"] {
   display: none;
 }
-
-
 .radio-group label {
   display: inline-block;
   padding: 10px 20px;
@@ -40,7 +33,6 @@ body {
   color: white !important; 
   border-color: green;
 }
-
 
 #loss:checked + label {
   background: red;
@@ -67,18 +59,12 @@ body {
   display: block;
 }
 
-
-
 .profit-container{
   display: none;
 }
 .deficit-container {
   display: none;
 }
-
-
-
-
 
 #utility {
   background-color: darkslategray;
@@ -137,7 +123,6 @@ td, th {
   width: 100%; 
 }
 
-
 .form-container input[type="radio"] {
   transform: scale(1.5); 
   margin-right: 10px;
@@ -149,7 +134,6 @@ td, th {
   margin-bottom: 5px;
   display: block;
 }
-
 
 #remove_button {
   width: 100%; 

@@ -7,6 +7,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+
 app.secret_key = os.urandom(24)
 
 # SQL funkcija
@@ -89,7 +90,7 @@ def journal():
           
             day_str = f'>{day}<'
             if day_str in cal:
-                # Calendāram katrai dienai izveidoju pogu ,kuru uzspiežot var pievienot "trade" priekš tās dienas ,neievadot datumu
+                # Kalendāram katrai dienai izveidoju pogu ,kuru uzspiežot var pievienot "trade" priekš tās dienas ,neievadot datumu
                 cal = cal.replace(day_str, f'><a href="/new_trade-{year}-{month:02d}-{day:02d}" id="{id}"><button type="button">{day} <br> {pnl[0][0]} € </button></a><')
         except ValueError:
             continue
